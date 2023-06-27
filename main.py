@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 import uvicorn
 
 
@@ -6,9 +6,10 @@ import uvicorn
 app = FastAPI()
 
 
-@app.get("/")
-async def hello_world():
-    return {"message": "Hello World"}
+@app.get("/", tags=['Welcome'], response_description='Displays welcome message')
+async def welcome(response: Response):
+    response.status_code=status.HTTP_200_OK
+    return {"message": "Hello, welcome to the Justice Leagues's FastAPI"}
 
 
 
