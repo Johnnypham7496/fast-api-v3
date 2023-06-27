@@ -1,2 +1,2 @@
 # fast-api-v3
-Example fastapi v3
+Sample project building an api using fastapi framework fastapi-v3
