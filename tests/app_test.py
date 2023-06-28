@@ -16,9 +16,9 @@ def test_tc_0001_welcome():
 
 
 def test_tc0002_health():
-    td_messgae = {'status': 'OK'}
+    td_message = {'status': 'OK'}
 
     response = client.get("/health")
 
     assert response.status_code == 200
-    assert response.json() == td_messgae
+    assert response.json() == td_message
