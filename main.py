@@ -16,6 +16,12 @@ async def welcome(response: Response):
     return {"message": "Hello, welcome to the Justice League's FastAPI"}
 
 
+@app.get("/health", tags= ['Health'], response_description='Returns the health status of this endpoint')
+async def health(response: Response):
+    response.status_code=status.HTTP_200_OK
+    return {"status": "OK"}
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
