@@ -3,7 +3,11 @@ import uvicorn
 
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Justice Leagues FastAPI",
+    description="This is the swagger doc for the Justice League",
+    version='1.0.0'
+)
 
 
 @app.get("/", tags=['Welcome'], response_description='Displays welcome message')
