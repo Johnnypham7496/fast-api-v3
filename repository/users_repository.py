@@ -2,6 +2,11 @@ from sqlalchemy.orm import Session
 from db.users_db import UserDb
 
 
+
+def get_all_users(db: Session):
+    return db.query(UserDb).all()
+
+
 def add_user(db: Session, _username, _email, _role):
     new_user = UserDb(username = _username, email = _email, role = _role)
     db.add(new_user)
