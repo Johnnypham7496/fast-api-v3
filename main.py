@@ -13,7 +13,7 @@ app = FastAPI(
 @app.get("/", tags=['Welcome'], response_description='Displays welcome message')
 async def welcome(response: Response):
     response.status_code=status.HTTP_200_OK
-    return {"message": "Hello, welcome to the Justice Leagues's FastAPI"}
+    return {"message": "Hello, welcome to the Justice League's FastAPI"}
 
 
 
