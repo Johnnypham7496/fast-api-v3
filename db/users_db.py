@@ -25,5 +25,3 @@ class JobDb(Base):
     description = Column(String,nullable=False)
     date_posted = Column(Date)
     is_active = Column(Boolean(),default=True)
-    owner_id =  Column(Integer,ForeignKey("users.id"))
-    owner = relationship("Users")
