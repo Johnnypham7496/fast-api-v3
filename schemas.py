@@ -12,12 +12,12 @@ class UserModel(BaseModel):
 
 
 class JobsModel(BaseModel):
-    user: UserModel
     id: int
     title: str
     company: str
     location: str
     description: str
+    user: UserModel
 
     class Config:
         orm_mode = True
