@@ -12,7 +12,7 @@ class UserDb(Base):
     is_active = Column(Boolean(),default=True)
     is_superuser = Column(Boolean(),default=False)
 
-
+    
     # Define the relationship between UserDb and JobDb
     jobs = relationship("JobDb", back_populates="user")
 
@@ -26,7 +26,6 @@ class JobDb(Base):
     company = Column(String,nullable=False)
     location = Column(String,nullable = False)
     description = Column(String,nullable=False)
-    date_posted = Column(Date)
     is_active = Column(Boolean(),default=True)
 
     user_id = Column(Integer, ForeignKey("users.id"))
