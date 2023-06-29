@@ -12,7 +12,7 @@ class UserModel(BaseModel):
 
 
 class JobsModel(BaseModel):
-    id: int
+    user: UserModel
     title: str
     company: str
     location: str
