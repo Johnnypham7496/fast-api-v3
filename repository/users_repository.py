@@ -7,6 +7,10 @@ def get_all_users(db: Session):
     return db.query(UserDb).all()
 
 
+def get_all_jobs(db: Session):
+    return db.query(JobDb).all()
+
+
 def add_user(db: Session, _username, _email, _role):
     new_user = UserDb(username = _username, email = _email, role = _role)
     db.add(new_user)
