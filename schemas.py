@@ -17,3 +17,6 @@ class JobsModel(BaseModel):
     company: str
     location: str
     description: str
+
+    class Config:
+        orm_mode = True

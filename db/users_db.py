@@ -22,10 +22,10 @@ class JobDb(Base):
     __tablename__ = "jobs"
 
     id = Column(Integer,primary_key = True, index=True)
-    title = Column(String,nullable= False)
-    company = Column(String,nullable=False)
-    location = Column(String,nullable = False)
-    description = Column(String,nullable=False)
+    title = Column(String(100),nullable= False)
+    company = Column(String(100),nullable=False)
+    location = Column(String(100),nullable = False)
+    description = Column(String(100),nullable=False)
     is_active = Column(Boolean(),default=True)
 
     user_id = Column(Integer, ForeignKey("users.id"))
