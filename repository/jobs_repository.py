@@ -6,6 +6,11 @@ def get_all_jobs(db: Session):
     return db.query(JobDb).all()
 
 
+def get_by_company(db: Session, _company):
+    query = db.query(JobDb).filter(JobDb.company == _company)
+    return query
+
+
 def add_jobs(db: Session, _title, _company, _location, _description, _user_id):
     new_job = JobDb(title= _title, company= _company, location = _location, description= _description, user_id= _user_id)
     db.add(new_job)

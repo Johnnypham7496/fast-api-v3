@@ -6,6 +6,10 @@ def get_all_users(db: Session):
     return db.query(UserDb).all()
 
 
+def get_by_username(db: Session, _username):
+    query = db.query(UserDb).filter(UserDb.username == _username).first()
+    return query
+
 
 def add_user(db: Session, _username, _email, _role):
     new_user = UserDb(username = _username, email = _email, role = _role)
