@@ -102,11 +102,10 @@ def test_tc0002_get_by_username(client):
     assert response.json()['role'] == td_role
 
 
-    # Tests that function raises HTTPException when username does not exist in database
-    def test_tc0003_invalid_username(client):
-        td_username = 'invalid.username'
+def test_tc0003_invalid_username(client):
+    td_username = 'invalid.username'
 
-        response = client.get(f'/users/v1/{td_username}')
+    response = client.get(f'/users/v1/{td_username}')
 
-        assert response.status_code == 404
-        assert response.json()['detail'] == 'username not found. Please check your parameter and try again.'
+    assert response.status_code == 404
+    assert response.json()['detail'] == 'username not found. Please check your parameter and try again.'
