@@ -7,7 +7,7 @@ def get_all_jobs(db: Session):
 
 
 def get_by_company(db: Session, _company):
-    query = db.query(JobDb).filter(JobDb.company == _company)
+    query = db.query(JobDb).filter(JobDb.company == _company).first()
     return query
 
 
