@@ -87,3 +87,26 @@ def test_tc0001_get_all_users(client):
     assert response.json()[td_first_record]['email'] == td_email
     assert response.json()[td_first_record]['role'] == td_role
     assert len(response.json()) == td_expected_record_count
+
+
+def test_tc0002_get_by_username(client):
+    td_username = 'darth.vader'
+    td_email = 'darth.vader@gmail.com'
+    td_role = 'villain'
+
+    response = client.get(f'/users/v1/{td_username}')
+
+    assert response.status_code == 200
+    assert response.json()['username'] == td_username
+    assert response.json()['email'] == td_email
+    assert response.json()['role'] == td_role
+
+
+    # Tests that function raises HTTPException when username does not exist in database
+    def test_tc0003_invalid_username(client):
+        td_username = 'invalid.username'
+
+        response = client.get(f'/users/v1/{td_username}')
+
+        assert response.status_code == 404
+        assert response.json()['detail'] == 'username not found. Please check your parameter and try again.'
