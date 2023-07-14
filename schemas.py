@@ -21,3 +21,7 @@ class JobsModel(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class MessageModel(BaseModel):
+    detail: str
