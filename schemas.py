@@ -25,3 +25,17 @@ class JobsModel(BaseModel):
 
 class MessageModel(BaseModel):
     detail: str
+
+
+class CreateUserModel(BaseModel):
+    username: str
+    email: str
+    role: str
+
+
+class CreateJobModel(BaseModel):
+    title: str
+    company: str
+    location: str
+    description: str
+    
