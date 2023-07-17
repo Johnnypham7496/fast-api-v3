@@ -34,19 +34,19 @@ def get_by_company(response: Response, company: str, db: Session= Depends(get_db
 
 @router.post('/', response_description='Creates a new job description', description='Creates a new job description', response_model=JobsModel, status_code=status.HTTP_201_CREATED, responses={400: {"model": MessageModel}, 409: {"model": MessageModel}})
 def create_job_description(request: CreateJobModel, response: Response, db: Session=Depends(get_db)):
-    user_id_request = request.user_id
+    username_request = request.username
     title_request = request.title
     company_request = request.company
     location_request = request.location
     description_request = request.description
 
-    user_id = users_repository.get_by_user_id(db, user_id_request)
+    username = users_repository.get_by_username(db, username_request)
 
-    if user_id is None:
+    if username is None:
         response_text = 'user_id not found. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=response_text)
 
-    if user_id_request == '':
+    if username_request == '':
         response_text = 'user_id field cannot be empty. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response_text)
     
@@ -67,7 +67,7 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response_text)
     
     # Create a UserModel instance from the user information fetched from the database
-    user_model = UserModel(id=user_id.id, username=user_id.username, email=user_id.email, role=user_id.role)
+    user_model = UserModel(id=username.id, username=username.username, email=username.email, role=username.role)
 
     # Create a JobsModel instance with the provided job information and the UserModel instance
     job_model = JobsModel(id=0, title=title_request, company=company_request, location=location_request,

@@ -34,7 +34,7 @@ class CreateUserModel(BaseModel):
 
 
 class CreateJobModel(BaseModel):
-    user_id: int
+    username: str
     title: str
     company: str
     location: str
