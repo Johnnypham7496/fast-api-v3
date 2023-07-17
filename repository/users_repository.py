@@ -10,6 +10,7 @@ def get_by_username(db: Session, _username):
     query = db.query(UserDb).filter(UserDb.username == _username).first()
     return query
 
+
 def get_by_email(db: Session, _email):
     query = db.query(UserDb).filter(UserDb.email == _email).first()
     return query
