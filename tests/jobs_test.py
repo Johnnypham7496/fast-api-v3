@@ -87,3 +87,30 @@ def test_tc0001_get_all_jobs(client):
     assert response.json()[td_first_record]['company'] == td_company
     assert response.json()[td_first_record]['location'] == td_location
     assert response.json()[td_first_record]['description'] == td_description
+
+
+def test_tc0002_get_by_company(client):
+    td_company = 'sith'
+    td_title = 'villain'
+    td_location = 'death star'
+    td_description = 'looking to control the republic'
+    td_id = 1
+
+    response = client.get(f'/jobs/v1/{td_company}')
+
+    assert response.status_code == 200
+    assert response.json()['id'] == td_id
+    assert response.json()['title'] == td_title
+    assert response.json()['company'] == td_company
+    assert response.json()['location'] == td_location
+    assert response.json()['description'] == td_description
+
+
+def test_tc0003_invalid_company(client):
+    td_company = 'invalid company'
+    td_message = 'company information not found. Please check your parameter and try again.'
+
+    response = client.get(f'/jobs/v1/{td_company}')
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == td_message
