@@ -1,3 +1,6 @@
+import sys
+import os
+import json
 from typing import Any
 from typing import Generator
 import pytest
@@ -7,8 +10,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from router.users_router import router
 from db_config import get_db
-import sys
-import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 #this is to include backend dir in sys.path so that we can import from db,main.py
 
@@ -109,3 +110,107 @@ def test_tc0003_invalid_username(client):
 
     assert response.status_code == 404
     assert response.json()['detail'] == 'username not found. Please check your parameter and try again.'
+
+
+def tc_test_tc0004_post(client):
+    td_username = 'test.username'
+    td_email = 'test.username@gmail.com'
+    td_role = 'test.role'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 201
+    assert response.json() == td_username
+    assert response.json() == td_email
+    assert response.json() == td_role
+
+    get_response = client.get(f'/users/v1/{td_username}')
+
+    assert get_response.status_code == 200
+    assert get_response.json() == td_username
+    assert get_response.json() == td_email
+    assert get_response.json() == td_role
+
+
+def tc_test_tc0005_post_existing_username(client):
+    td_username = 'darth.vader'
+    td_email = 'test@gmail.com'
+    td_role = 'test'
+    td_message = 'username already exists. Please check your parameter and try again.'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 409
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0006_exiting_email(client):
+    td_username = 'test.username'
+    td_email = 'darth.vader@gmail.com'
+    td_role = 'test.role'
+    td_message = 'email already exists. Please check your parameter and try again.'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 409
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0007_post_empty_username(client):
+    td_username = ''
+    td_email = ''
+    td_role = ''
+    td_message = 'username cannot be empty. Please check your parameter and try again.'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0008_post_empty_email(client):
+    td_username = 'test.username'
+    td_email = ''
+    td_role = ''
+    td_message = 'email cannot be empty. Please check your parameter and try again.'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0009_post_empty_role(client):
+    td_username = 'test.username'
+    td_email = 'test.username@gmail.com'
+    td_role = ''
+    td_message = 'role cannot be empty. Please check your parameter and try again.'
+
+    response = client.post(f'/users/v1/', data = json.dumps(dict(
+        username = td_username,
+        email = td_email,
+        role = td_role
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
