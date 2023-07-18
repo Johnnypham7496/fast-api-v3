@@ -43,7 +43,7 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
     username = users_repository.get_by_username(db, username_request)
 
     if username is None:
-        response_text = 'user_id not found. Please check your parameter and try again.'
+        response_text = 'username not found. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=response_text)
 
     if username_request == '':

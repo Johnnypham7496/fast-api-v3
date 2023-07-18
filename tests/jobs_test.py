@@ -1,3 +1,6 @@
+import sys
+import os
+import json
 from typing import Any
 from typing import Generator
 import pytest
@@ -7,8 +10,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from router.jobs_router import router
 from db_config import get_db
-import sys
-import os
+
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 #this is to include backend dir in sys.path so that we can import from db,main.py
 
@@ -113,4 +116,128 @@ def test_tc0003_invalid_company(client):
     response = client.get(f'/jobs/v1/{td_company}')
 
     assert response.status_code == 404
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0004_post_job(client):
+    td_username_request = 'darth.vader'
+    td_title = 'villain'
+    td_company = 'sith'
+    td_location = 'death star'
+    td_description = 'looking to control the republic'
+    td_id = 4
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username_request,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 201  
+    assert response.json()['id'] == td_id
+    assert response.json()['title'] == td_title
+    assert response.json()['company'] == td_company
+    assert response.json()['location'] == td_location
+    assert response.json()['description'] == td_description
+
+
+def test_tc0005_post_username_not_found(client):
+    td_username = 'test_username'
+    td_title = 'test_title'
+    td_company = 'test_company'
+    td_location = 'test_location'
+    td_description = 'test_description'
+    td_message = 'username not found. Please check your parameter and try again.'
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0006_post_empty_title(client):
+    td_username = 'darth.vader'
+    td_title = ''
+    td_company = ''
+    td_location = ''
+    td_description = ''
+    td_message = 'title field cannot be empty. Please check your parameter and try again.'
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0006_post_empty_company(client):
+    td_username = 'darth.vader'
+    td_title = 'test_title'
+    td_company = ''
+    td_location = ''
+    td_description = ''
+    td_message = 'company field cannot be empty. Please check your parameter and try again.'
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0006_post_empty_location(client):
+    td_username = 'darth.vader'
+    td_title = 'test_title'
+    td_company = 'test_company'
+    td_location = ''
+    td_description = ''
+    td_message = 'location field cannot be empty. Please check your parameter and try again.'
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0006_post_empty_description(client):
+    td_username = 'darth.vader'
+    td_title = 'test_title'
+    td_company = 'test_company'
+    td_location = 'test_location'
+    td_description = ''
+    td_message = 'description field cannot be empty. Please check your parameter and try again.'
+
+    response = client.post('/jobs/v1', data= json.dumps(dict(
+        username=td_username,
+        title=td_title,
+        company=td_company,
+        location=td_location,
+        description=td_description
+    )))
+
+    assert response.status_code == 400
     assert response.json()['detail'] == td_message
