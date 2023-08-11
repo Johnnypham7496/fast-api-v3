@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import Optional
 
 class UserModel(BaseModel):
     id: int
@@ -39,3 +39,10 @@ class CreateJobModel(BaseModel):
     company: str
     location: str
     description: str
+
+
+class UpdateUserModel(BaseModel):
+    email: Optional['str']
+    role: Optional['str']
+
+
