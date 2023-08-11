@@ -99,39 +99,3 @@ def update_user(_username: str, request: UpdateUserModel, response: Response, db
     
     response.status_code = status.HTTP_204_NO_CONTENT
     return users_repository.update_user(db, _username, email_request, role_request)
-
-
-
-# @router.put('/{username}', response_description='Successfully updated user info', description='Updating user record', status_code=status.HTTP_204_NO_CONTENT, responses= {status.HTTP_204_NO_CONTENT: {"model": None}, status.HTTP_400_BAD_REQUEST: {'model': MessageModel}, status.HTTP_404_NOT_FOUND: {'model': MessageModel}})
-# def update_user(username: str, request: UpdateUserModel, response: Response, db: Session = Depends(get_db)):
-#     email_request = request.email
-#     role_request = request.role
-
-
-#     if not email_request and not role_request:
-#         response_text = 'request body cannot be empty. Please check your payload and try again.'
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
-
-#     user_check = user_repository.get_by_username(db, username)
-
-#     if not user_check:
-#         response_text = 'username already exists. Please check your parameter and try again.'
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=response_text)
-
-#     if email_request: 
-#         email_request = email_request.strip()
-#     else:
-#         email_request = ''
-
-#     if role_request:
-#         role_request = role_request.strip()
-#     else:
-#         email_request = ''
-
-#     if email_request == '' and role_request == '':
-#         response_text = 'request body fields cannot be empty. Please check your payload and try again.'
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response_text)
-
-
-#     response.status_code = status.HTTP_204_NO_CONTENT
-#     return user_repository.update_user(db, username, email_request, role_request)
