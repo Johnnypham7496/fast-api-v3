@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas import UserModel, MessageModel, CreateUserModel
+from schemas import UserModel, MessageModel, CreateUserModel, UpdateUserModel
 from repository import users_repository
 from db_config import get_db
 from typing import List
@@ -64,3 +64,13 @@ def create_user(request: CreateUserModel, response: Response, db: Session= Depen
     response.status_code = status.HTTP_201_CREATED
     response.headers['Location'] = '/users/v1/' + str(username_request.strip())
     return users_repository.add_user(db, username_request, email_request, role_request)
+
+
+@router.put('/{username}', response_description='Successfully updated user info', description='Updating user record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {'model': None}, status.HTTP_400_BAD_REQUEST: {'model': MessageModel}, status.HTTP_404_NOT_FOUND: {'model', MessageModel}})
+def update_user(response: Response, _username: str, request: UpdateUserModel, db: Session = Depends(get_db)):
+    email_request = request.email
+    role_request = request.role
+
+    if not email_request and not role_request: 
+        response_text = 'response body cannot be empty. Please check your parameter and try again.'
+        raise HTTPException(status_code=status.400, detail=response_text)
