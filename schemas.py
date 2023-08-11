@@ -46,3 +46,8 @@ class UpdateUserModel(BaseModel):
     role: Optional['str']
 
 
+class UpdateJobModel(BaseModel):
+    title: Optional['str']
+    company: Optional['str']
+    location: Optional['str']
+    description: Optional['str']
