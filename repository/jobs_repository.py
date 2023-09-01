@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from db.users_db import JobDb
+from db.users_db import JobDb, UserDb
 
 
 def get_all_jobs(db: Session):
@@ -23,3 +23,24 @@ def add_jobs_td(db: Session):
     add_jobs(db, "villain", "sith", "death star", "looking to control the republic", 1)
     add_jobs(db, "billionaire", "wayne enterprise", "gotham city", "funding tech to help the world", 2)
     add_jobs(db, "soldier", "the avengers", "queens new york", "earths protectors", 3)
+
+
+def update_job(db: Session,_username, _title, _description, _company, _location):
+    user_job_to_update = db.query(UserDb).filter(UserDb.username == _username).first()
+    
+    username_id = user_job_to_update[id]
+
+    if _title == None:
+        user_job_to_update.title = _title
+
+    if _description == None:
+        user_job_to_update.description = _description
+
+    if _company == None:
+        user_job_to_update.company = _company
+
+    if _location == None:
+        user_job_to_update.location = _location
+
+
+    db.commit()
