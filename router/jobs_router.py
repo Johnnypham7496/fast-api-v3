@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 from sqlalchemy.orm import Session
-from schemas import JobsModel, MessageModel, CreateJobModel, UserModel
+from schemas import JobsModel, MessageModel, CreateJobModel, UserModel, UpdateJobModel
 from repository import jobs_repository, users_repository
 from db_config import get_db
 from typing import List
@@ -76,3 +76,47 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
     response.status_code = status.HTTP_201_CREATED
     response.headers['message'] = 'job created'
     return jobs_repository.add_jobs(db, job_model.title, job_model.company, job_model.location, job_model.description, job_model.user.id)
+
+
+@router.put('/{company}', response_description='Successfully updated user company', description='Updating company record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {"model": None}, status.HTTP_400_BAD_REQUEST: {"model": MessageModel}, status.HTTP_404_NOT_FOUND: {"model": MessageModel}})
+def update_job(_username: str, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
+    title_request = request.title
+    company_request = request.company
+    location_request = request.location
+    description_request = request.description
+
+
+    if not title_request and not company_request and not location_request and not description_request: 
+        response_text = 'response body cannot be empty. Please check your parameter and try again.'
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
+    
+
+    username_check = users_repository.get_by_username(db, _username)
+
+    if not username_check:
+        response_text = 'username does not exist. Please check your parameter and try again.'
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
+    
+    if title_request:
+        title_request = title_request.strip()
+    else:
+        title_request = ''
+
+    if company_request:
+        company_request = company_request.strip()
+    else:
+        company_request = ''
+
+    if location_request:
+        location_request = location_request.strip()
+
+    if description_request:
+        description_request = description_request.strip()
+
+
+    if title_request == '' and company_request == '' and location_request == '' and description_request == '':
+        response_text = 'response body fields cannot be empty. Please check your payload and try again.'
+        raise HTTPException(status_code=400, detail=response_text)
+    
+    response.status_code = status.HTTP_204_NO_CONTENT
+    return users_repository.update_user(db, _username, title_request, company_request, location_request, description_request)
