@@ -78,8 +78,8 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
     return jobs_repository.add_jobs(db, job_model.title, job_model.company, job_model.location, job_model.description, job_model.user.id)
 
 
-@router.put('/{company}', response_description='Successfully updated user company', description='Updating company record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {"model": None}, status.HTTP_400_BAD_REQUEST: {"model": MessageModel}, status.HTTP_404_NOT_FOUND: {"model": MessageModel}})
-def update_job(_username: str, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
+@router.put('/{job_id}', response_description='Successfully updated user company', description='Updating company record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {"model": None}, status.HTTP_400_BAD_REQUEST: {"model": MessageModel}, status.HTTP_404_NOT_FOUND: {"model": MessageModel}})
+def update_job(_id: str, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
     title_request = request.title
     company_request = request.company
     location_request = request.location
@@ -91,9 +91,9 @@ def update_job(_username: str, request: UpdateJobModel, response: Response, db: 
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
     
 
-    username_check = users_repository.get_by_username(db, _username)
+    job_id_check = jobs_repository.get_by_id(db, _id)
 
-    if not username_check:
+    if not job_id_check:
         response_text = 'username does not exist. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
@@ -119,4 +119,4 @@ def update_job(_username: str, request: UpdateJobModel, response: Response, db: 
         raise HTTPException(status_code=400, detail=response_text)
     
     response.status_code = status.HTTP_204_NO_CONTENT
-    return users_repository.update_user(db, _username, title_request, company_request, location_request, description_request)
+    return jobs_repository.update_job(db, _id, title_request, company_request, location_request, description_request)
