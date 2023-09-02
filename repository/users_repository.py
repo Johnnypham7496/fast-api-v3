@@ -33,10 +33,10 @@ def add_user_td(db: Session):
 def update_user(db: Session, _username, _email, _role):
     user_to_update = db.query(UserDb).filter(UserDb.username == _username).first()
 
-    if _email == None:
+    if _email != '': 
         user_to_update.email = _email
 
-    if _role == None:
+    if _role != '':
         user_to_update.role = _role
 
     db.commit()
