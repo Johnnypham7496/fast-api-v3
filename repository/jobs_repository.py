@@ -34,16 +34,16 @@ def update_job(db: Session, _id, _title, _description, _company, _location):
     job_to_update = db.query(JobDb).filter(JobDb.id == _id).first()
     
 
-    if _title == None:
+    if _title != '':
         job_to_update.title = _title
 
-    if _description == None:
+    if _description != '':
         job_to_update.description = _description
 
-    if _company == None:
+    if _company != '':
         job_to_update.company = _company
 
-    if _location == None:
+    if _location != '':
         job_to_update.location = _location
 
 
