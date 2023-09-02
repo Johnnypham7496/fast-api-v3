@@ -42,12 +42,12 @@ class CreateJobModel(BaseModel):
 
 
 class UpdateUserModel(BaseModel):
-    email: Optional['str']
-    role: Optional['str']
+    email: Optional[str]
+    role: Optional[str]
 
 
 class UpdateJobModel(BaseModel):
-    title: Optional['str']
-    company: Optional['str']
-    location: Optional['str']
-    description: Optional['str']
+    title: Optional[str]
+    company: Optional[str]
+    location: Optional[str]
+    description: Optional[str]
