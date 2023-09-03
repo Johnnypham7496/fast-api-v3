@@ -82,12 +82,12 @@ def update_user(_username: str, request: UpdateUserModel, response: Response, db
         response_text = 'username does not exist. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
-    if email_request == None:
+    if email_request != None:
         email_request = email_request.strip()
     else:
         email_request = ''
 
-    if role_request == None:
+    if role_request != None:
         role_request = role_request.strip()
     else:
         role_request = ''
