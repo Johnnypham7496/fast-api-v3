@@ -216,3 +216,23 @@ def test_tc0009_post_empty_role(client):
 
     assert response.status_code == 400
     assert response.json()['detail'] == td_message
+
+
+def test_tc0010_put(client):
+    td_id = 1
+    td_username = 'darth.vader'
+    td_email = 'test@gmail.com'
+    td_role = 'test'
+    td_payload = '{"email": "test@gmail.com", "role": "test"}'
+
+    response = client.put(f"/users/v1/{td_username}", data= td_payload, content= 'application/json')
+
+    assert response.status_code == 204
+    
+    get_response = client.get(f'/users/v1/{td_username}')
+
+    assert get_response.status_code == 200
+    assert get_response.json()['id'] == td_id
+    assert get_response.json()['username'] == td_username
+    assert get_response.json()['email'] == td_email
+    assert get_response.json()['role'] == td_role
