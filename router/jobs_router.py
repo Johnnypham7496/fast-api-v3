@@ -19,15 +19,14 @@ def get_all_jobs(response: Response, db: Session= Depends(get_db)):
     return return_value
 
 
-@router.get('/{company}', response_description='Displays company information', description='Retrieves job by company name', response_model=JobsModel, responses= {404: {"model": MessageModel}})
-def get_by_company(response: Response, company: str, db: Session= Depends(get_db)):
-    return_value = jobs_repository.get_by_company(db, company)
+@router.get('/{job_id}', response_description='Successfully retrieved by ID', description='Get by ID', status_code= 200, responses={200: {"model": JobsModel}, 400: {"model": MessageModel}, 404: {"model": MessageModel}})
+def get_by_id(job_id: int, response: Response, db: Session= Depends(get_db)):
+    return_value = jobs_repository.get_by_id(db, job_id)
 
     if return_value == None:
-        response_text = 'company information not found. Please check your parameter and try again.'
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=response_text)
+        response_text = 'Company information not found. Please check the ID number and try again.'
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
-    response.headers['message'] = 'company found'
     response.status_code = status.HTTP_200_OK
     return return_value
 
