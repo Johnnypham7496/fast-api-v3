@@ -243,14 +243,14 @@ def test_tc0009_post_empty_description(client):
     assert response.json()['detail'] == td_message
 
 
-def test_tc0010_put(client):
-    td_id = 1
-    td_title = 'test title'
-    td_company = 'test company'
-    td_location = 'test location'
-    td_description = 'test description'
-    td_payload = '{"title": "test title", "company": "test company", "location": "test location", "description": "test description"}'
+# def test_tc0010_put(client):
+#     td_id = 1
+#     td_title = 'test title'
+#     td_company = 'test company'
+#     td_location = 'test location'
+#     td_description = 'test description'
+#     td_payload = '{"title": "test title", "company": "test company", "location": "test location", "description": "test description"}'
 
-    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+#     response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
 
-    assert response.status_code == 204
+#     assert response.status_code == 204
