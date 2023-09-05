@@ -40,3 +40,8 @@ def update_user(db: Session, _username, _email, _role):
         user_to_update.role = _role
 
     db.commit()
+
+
+def delete_user(db: Session, _username):
+    db.query(UserDb).filter(UserDb.username == _username).delete()
+    db.commit()
