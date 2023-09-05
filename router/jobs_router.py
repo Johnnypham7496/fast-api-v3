@@ -24,7 +24,7 @@ def get_by_id(job_id: int, response: Response, db: Session= Depends(get_db)):
     return_value = jobs_repository.get_by_id(db, job_id)
 
     if return_value == None:
-        response_text = 'Company information not found. Please check the ID number and try again.'
+        response_text = f'company information with id {job_id} not found. Please check the ID number and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
     response.status_code = status.HTTP_200_OK

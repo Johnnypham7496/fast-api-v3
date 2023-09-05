@@ -92,14 +92,14 @@ def test_tc0001_get_all_jobs(client):
     assert response.json()[td_first_record]['description'] == td_description
 
 
-def test_tc0002_get_by_company(client):
+def test_tc0002_get_by_id(client):
     td_company = 'sith'
     td_title = 'villain'
     td_location = 'death star'
     td_description = 'looking to control the republic'
     td_id = 1
 
-    response = client.get(f'/jobs/v1/{td_company}')
+    response = client.get(f'/jobs/v1/{td_id}')
 
     assert response.status_code == 200
     assert response.json()['id'] == td_id
@@ -109,11 +109,11 @@ def test_tc0002_get_by_company(client):
     assert response.json()['description'] == td_description
 
 
-def test_tc0003_invalid_company(client):
-    td_company = 'invalid company'
-    td_message = 'company information not found. Please check your parameter and try again.'
+def test_tc0003_invalid_id(client):
+    td_id = '0'
+    td_message = f'company information with id {td_id} not found. Please check the ID number and try again.'
 
-    response = client.get(f'/jobs/v1/{td_company}')
+    response = client.get(f'/jobs/v1/{td_id}')
 
     assert response.status_code == 404
     assert response.json()['detail'] == td_message
@@ -183,7 +183,7 @@ def test_tc0006_post_empty_title(client):
     assert response.json()['detail'] == td_message
 
 
-def test_tc0006_post_empty_company(client):
+def test_tc0007_post_empty_company(client):
     td_username = 'darth.vader'
     td_title = 'test_title'
     td_company = ''
@@ -203,7 +203,7 @@ def test_tc0006_post_empty_company(client):
     assert response.json()['detail'] == td_message
 
 
-def test_tc0006_post_empty_location(client):
+def test_tc0008_post_empty_location(client):
     td_username = 'darth.vader'
     td_title = 'test_title'
     td_company = 'test_company'
@@ -223,7 +223,7 @@ def test_tc0006_post_empty_location(client):
     assert response.json()['detail'] == td_message
 
 
-def test_tc0006_post_empty_description(client):
+def test_tc0009_post_empty_description(client):
     td_username = 'darth.vader'
     td_title = 'test_title'
     td_company = 'test_company'
@@ -243,7 +243,7 @@ def test_tc0006_post_empty_description(client):
     assert response.json()['detail'] == td_message
 
 
-def test_tc0007_put(client):
+def test_tc0010_put(client):
     td_id = 1
     td_title = 'test title'
     td_company = 'test company'
