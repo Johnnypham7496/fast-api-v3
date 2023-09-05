@@ -97,3 +97,15 @@ def update_user(username: str, request: UpdateUserModel, response: Response, db:
     
     response.status_code= status.HTTP_204_NO_CONTENT
     return users_repository.update_user(db, username, email_request, role_request)
+
+
+@router.delete('/{username}', response_description='Successfully deleted user', description='Deletes user by username', status_code= 204, responses={204: {"model": None}, 404: {"model": MessageModel}})
+def delete_user(username: str, response: Response, db: Session = Depends(get_db)):
+    return_value = users_repository.get_by_username(db, username)
+
+    if return_value == None:
+        response_text = 'username not found. Please check your parameter and try agian'
+        raise HTTPException(status_code= 404, detail= response_text)
+    
+    response.status_code = status.HTTP_204_NO_CONTENT
+    return users_repository.delete_user(db, username)
