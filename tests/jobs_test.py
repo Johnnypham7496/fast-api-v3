@@ -249,9 +249,23 @@ def test_tc0010_put(client):
     td_company = 'test company'
     td_location = 'test location'
     td_description = 'test description'
+    td_headers = 'Successfully updated job details'
     td_payload = '{"title": "test title", "company": "test company", "location": "test location", "description": "test description"}'
 
-    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+    response = client.put(f'/jobs/v1/{td_id}', data=json.dumps(dict(
+        title= td_title,
+        company= td_company,
+        location= td_location,
+        description= td_description
+    )), content= 'application/json')
 
     assert response.status_code == 204
-    
+    assert response.headers['message'] == td_headers
+
+    get_response = client.get(f'/jobs/v1/{td_id}')
+    print(get_response.json())
+    assert get_response.status_code == 200
+    assert get_response.json()['title'] == td_title
+    assert get_response.json()['company'] == td_company
+    assert get_response.json()['location'] == td_location
+    assert get_response.json()['description'] == td_description

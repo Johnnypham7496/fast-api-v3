@@ -95,7 +95,7 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
     job_id_check = jobs_repository.get_by_id(db, job_id)
 
     if job_id_check == None:
-        response_text = 'username does not exist. Please check your parameter and try again.'
+        response_text = f'ID number {job_id} does not exist. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
     if title_request != None:
