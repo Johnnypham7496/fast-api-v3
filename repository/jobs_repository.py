@@ -48,3 +48,8 @@ def update_job(db: Session, _id, _title, _description, _company, _location):
 
 
     db.commit()
+
+
+def delete_job(db: Session, _id):
+    db.query(JobDb).filter(JobDb.id == _id).delete()
+    db.commit()
