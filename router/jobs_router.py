@@ -16,6 +16,7 @@ router = APIRouter(
 def get_all_jobs(response: Response, db: Session= Depends(get_db)):
     return_value = jobs_repository.get_all_jobs(db)
     response.status_code=status.HTTP_200_OK
+    response.headers['message'] = 'Successfully retieved all job information'
     return return_value
 
 
@@ -28,16 +29,17 @@ def get_by_id(job_id: int, response: Response, db: Session= Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
     response.status_code = status.HTTP_200_OK
+    response.headers['message'] = 'Successfully retrieved job information by ID'
     return return_value
 
 
 @router.post('/', response_description='Creates a new job description', description='Creates a new job description', response_model=JobsModel, status_code=status.HTTP_201_CREATED, responses={400: {"model": MessageModel}, 409: {"model": MessageModel}})
 def create_job_description(request: CreateJobModel, response: Response, db: Session=Depends(get_db)):
     username_request = request.username
-    title_request = request.title
-    company_request = request.company
-    location_request = request.location
-    description_request = request.description
+    title_request = request.title.lower()
+    company_request = request.company.lower()
+    location_request = request.location.lower()
+    description_request = request.description.lower()
 
     username = users_repository.get_by_username(db, username_request)
 
@@ -78,11 +80,11 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
 
 
 @router.put('/{job_id}', response_description='Successfully updated user company', description='Updating company record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {"model": None}, status.HTTP_400_BAD_REQUEST: {"model": MessageModel}, status.HTTP_404_NOT_FOUND: {"model": MessageModel}})
-def update_job(id: int, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
-    title_request = request.title
-    company_request = request.company
-    location_request = request.location
-    description_request = request.description
+def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
+    title_request = request.title.lower()
+    company_request = request.company.lower()
+    location_request = request.location.lower()
+    description_request = request.description.lower()
 
 
     if title_request == None and company_request == None and location_request == None and description_request == None: 
@@ -90,7 +92,7 @@ def update_job(id: int, request: UpdateJobModel, response: Response, db: Session
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
     
 
-    job_id_check = jobs_repository.get_by_id(db, id)
+    job_id_check = jobs_repository.get_by_id(db, job_id)
 
     if job_id_check == None:
         response_text = 'username does not exist. Please check your parameter and try again.'
@@ -118,4 +120,18 @@ def update_job(id: int, request: UpdateJobModel, response: Response, db: Session
         raise HTTPException(status_code=400, detail=response_text)
     
     response.status_code = status.HTTP_204_NO_CONTENT
-    return jobs_repository.update_job(db, id, title_request, company_request, location_request, description_request)
+    response.headers['message'] = 'Successfully updated job details'
+    return jobs_repository.update_job(db, job_id, title_request, company_request, location_request, description_request)
+
+
+@router.delete('/{job_id}', response_description= 'Successfully deleted job details', description= 'Delete job details by ID', status_code=204, responses={204: {"model": None}, 404: {"model": MessageModel}})
+def delete_job(job_id: int, response: Response, db: Session = Depends(get_db)):
+    return_value = jobs_repository.get_by_id(db, job_id)
+
+    if return_value == None:
+        response_text = 'job detail not found. Please check your ID number and try again'
+        raise HTTPException(status_code=404, detail=response_text)
+    
+    response.status_code = status.HTTP_204_NO_CONTENT
+    response.headers['message'] = 'Successfully delete job detail'
+    return jobs_repository.delete_job(db, job_id)

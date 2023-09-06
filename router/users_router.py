@@ -16,6 +16,7 @@ router = APIRouter(
 def get_all_users(response: Response, db: Session= Depends(get_db)):
     return_value = users_repository.get_all_users(db)
     response.status_code=status.HTTP_200_OK
+    response.headers['message'] = 'Successfully displayed all users'
     return return_value
 
 
@@ -96,4 +97,18 @@ def update_user(username: str, request: UpdateUserModel, response: Response, db:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=response_text)
     
     response.status_code= status.HTTP_204_NO_CONTENT
+    response.headers['message'] = 'Successfully updated user profile'
     return users_repository.update_user(db, username, email_request, role_request)
+
+
+@router.delete('/{username}', response_description='Successfully deleted user', description='Deletes user by username', status_code= 204, responses={204: {"model": None}, 404: {"model": MessageModel}})
+def delete_user(username: str, response: Response, db: Session = Depends(get_db)):
+    return_value = users_repository.get_by_username(db, username)
+
+    if return_value == None:
+        response_text = 'username not found. Please check your parameter and try again'
+        raise HTTPException(status_code= 404, detail= response_text)
+    
+    response.status_code = status.HTTP_204_NO_CONTENT
+    response.headers['message'] = 'Successfully deleted user'
+    return users_repository.delete_user(db, username)
