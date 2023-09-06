@@ -80,7 +80,7 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
 
 
 @router.put('/{job_id}', response_description='Successfully updated user company', description='Updating company record', status_code=status.HTTP_204_NO_CONTENT, responses={204: {"model": None}, status.HTTP_400_BAD_REQUEST: {"model": MessageModel}, status.HTTP_404_NOT_FOUND: {"model": MessageModel}})
-def update_job(id: int, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
+def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Session = Depends(get_db)):
     title_request = request.title.lower()
     company_request = request.company.lower()
     location_request = request.location.lower()
@@ -92,7 +92,7 @@ def update_job(id: int, request: UpdateJobModel, response: Response, db: Session
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
     
 
-    job_id_check = jobs_repository.get_by_id(db, id)
+    job_id_check = jobs_repository.get_by_id(db, job_id)
 
     if job_id_check == None:
         response_text = 'username does not exist. Please check your parameter and try again.'
@@ -121,4 +121,4 @@ def update_job(id: int, request: UpdateJobModel, response: Response, db: Session
     
     response.status_code = status.HTTP_204_NO_CONTENT
     response.headers['message'] = 'Successfully updated job details'
-    return jobs_repository.update_job(db, id, title_request, company_request, location_request, description_request)
+    return jobs_repository.update_job(db, job_id, title_request, company_request, location_request, description_request)
