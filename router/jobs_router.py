@@ -122,3 +122,16 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
     response.status_code = status.HTTP_204_NO_CONTENT
     response.headers['message'] = 'Successfully updated job details'
     return jobs_repository.update_job(db, job_id, title_request, company_request, location_request, description_request)
+
+
+@router.delete('/{job_id}', response_description= 'Successfully deleted job details', description= 'Delete job details by ID', status_code=204, responses={204: {"model": None}, 404: {"model": MessageModel}})
+def delete_job(job_id: int, response: Response, db: Session = Depends(get_db)):
+    return_value = jobs_repository.get_by_id(db, job_id)
+
+    if return_value == None:
+        response_text = 'job detail not found. Please check your ID number and try again'
+        raise HTTPException(status_code=404, detail=response_text)
+    
+    response.status_code = status.HTTP_204_NO_CONTENT
+    response.headers['message'] = 'Successfully delete job detail'
+    return jobs_repository.delete_job(db, job_id)
