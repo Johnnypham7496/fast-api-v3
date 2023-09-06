@@ -106,7 +106,7 @@ def delete_user(username: str, response: Response, db: Session = Depends(get_db)
     return_value = users_repository.get_by_username(db, username)
 
     if return_value == None:
-        response_text = 'username not found. Please check your parameter and try agian'
+        response_text = 'username not found. Please check your parameter and try again'
         raise HTTPException(status_code= 404, detail= response_text)
     
     response.status_code = status.HTTP_204_NO_CONTENT
