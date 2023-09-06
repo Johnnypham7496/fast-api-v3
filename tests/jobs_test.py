@@ -252,12 +252,7 @@ def test_tc0010_put(client):
     td_headers = 'Successfully updated job details'
     td_payload = '{"title": "test title", "company": "test company", "location": "test location", "description": "test description"}'
 
-    response = client.put(f'/jobs/v1/{td_id}', data=json.dumps(dict(
-        title= td_title,
-        company= td_company,
-        location= td_location,
-        description= td_description
-    )), content= 'application/json')
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
 
     assert response.status_code == 204
     assert response.headers['message'] == td_headers
