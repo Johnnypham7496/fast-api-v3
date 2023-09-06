@@ -82,7 +82,7 @@ def test_tc0001_get_all_jobs(client):
     td_location = 'death star'
     td_description = 'looking to control the republic'
 
-    response = client.get('/jobs/v1')
+    response = client.get('/jobs/v1/')
 
     assert response.status_code == 200
     assert response.json()[td_first_record]['id'] == td_id
@@ -127,7 +127,7 @@ def test_tc0004_post_job(client):
     td_description = 'looking to control the republic'
     td_id = 4
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username_request,
         title=td_title,
         company=td_company,
@@ -151,7 +151,7 @@ def test_tc0005_post_username_not_found(client):
     td_description = 'test_description'
     td_message = 'username not found. Please check your parameter and try again.'
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username,
         title=td_title,
         company=td_company,
@@ -171,7 +171,7 @@ def test_tc0006_post_empty_title(client):
     td_description = ''
     td_message = 'title field cannot be empty. Please check your parameter and try again.'
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username,
         title=td_title,
         company=td_company,
@@ -191,7 +191,7 @@ def test_tc0007_post_empty_company(client):
     td_description = ''
     td_message = 'company field cannot be empty. Please check your parameter and try again.'
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username,
         title=td_title,
         company=td_company,
@@ -211,7 +211,7 @@ def test_tc0008_post_empty_location(client):
     td_description = ''
     td_message = 'location field cannot be empty. Please check your parameter and try again.'
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username,
         title=td_title,
         company=td_company,
@@ -231,7 +231,7 @@ def test_tc0009_post_empty_description(client):
     td_description = ''
     td_message = 'description field cannot be empty. Please check your parameter and try again.'
 
-    response = client.post('/jobs/v1', data= json.dumps(dict(
+    response = client.post('/jobs/v1/', data= json.dumps(dict(
         username=td_username,
         title=td_title,
         company=td_company,
