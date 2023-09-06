@@ -345,9 +345,9 @@ def test_tc0016_delete(client):
 
 def test_tc0017_delete_bad_username(client):
     td_username = 'no.user'
-    td_message = 'username not found. Please check your parameter and try again.'
+    td_message = 'username not found. Please check your parameter and try again'
 
-    response = client.delete(f'/users/job/{td_username}')
+    response = client.delete(f'/users/v1/{td_username}')
 
     assert response.status_code == 404
     assert response.json()['detail'] == td_message
