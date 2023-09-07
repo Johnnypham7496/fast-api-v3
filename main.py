@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Response, status
 from sqlalchemy.orm import Session
 from router import app_router, users_router, jobs_router
-from db import users_db
+from db import model_db
 from db_config import get_db, engine
 from repository import users_repository
 import uvicorn

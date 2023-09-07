@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from db.users_db import JobDb, UserDb
+from db.model_db import JobDb, UserDb
 
 
 def get_all_jobs(db: Session):
