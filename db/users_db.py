@@ -14,7 +14,7 @@ class UserDb(Base):
 
     
     # Define the relationship between UserDb and JobDb
-    jobs = relationship("JobDb", back_populates="owner")
+    jobs = relationship("JobDb", back_populates="user")
 
 
 
