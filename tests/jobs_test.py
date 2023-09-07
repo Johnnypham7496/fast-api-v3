@@ -366,3 +366,23 @@ def test_0014_put_invalid_id(client):
 
     assert response.status_code == 404
     assert response.json()['detail'] == td_message
+
+
+def test_0015_delete(client):
+    td_id = 1
+    td_headers = 'Successfully deleted job detail'
+
+    response = client.delete(f'/jobs/v1/{td_id}')
+
+    assert response.status_code == 204
+    assert response.headers['message'] == td_headers
+
+
+def test_0016_delete_invalid_id(client):
+    td_id = 1234
+    td_message = 'job detail not found. Please check your ID number and try again'
+
+    response = client.delete(f'/jobs/v1/{td_id}')
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == td_message

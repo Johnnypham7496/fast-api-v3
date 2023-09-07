@@ -133,5 +133,5 @@ def delete_job(job_id: int, response: Response, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=response_text)
     
     response.status_code = status.HTTP_204_NO_CONTENT
-    response.headers['message'] = 'Successfully delete job detail'
+    response.headers['message'] = 'Successfully deleted job detail'
     return jobs_repository.delete_job(db, job_id)
