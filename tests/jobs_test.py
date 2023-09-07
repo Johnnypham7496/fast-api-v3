@@ -258,7 +258,7 @@ def test_tc0010_put(client):
     assert response.headers['message'] == td_headers
 
     get_response = client.get(f'/jobs/v1/{td_id}')
-    print(get_response.json())
+    
     assert get_response.status_code == 200
     assert get_response.json()['title'] == td_title
     assert get_response.json()['company'] == td_company
