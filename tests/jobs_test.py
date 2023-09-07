@@ -264,3 +264,105 @@ def test_tc0010_put(client):
     assert get_response.json()['company'] == td_company
     assert get_response.json()['location'] == td_location
     assert get_response.json()['description'] == td_description
+
+
+def test_tc0011_put_title(client):
+    td_id = 1
+    td_title = 'test title'
+    td_headers = 'Successfully updated job details'
+    td_payload = '{"title": "test title", "company": "", "location": "", "description": ""}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 204
+    assert response.headers['message'] == td_headers
+
+    get_response = client.get(f'/jobs/v1/{td_id}')
+    
+    assert get_response.status_code == 200
+    assert get_response.json()['title'] == td_title
+
+
+def test_tc0012_put_company(client):
+    td_id = 1
+    td_company = 'test company'
+    td_headers = 'Successfully updated job details'
+    td_payload = '{"title": "", "company": "test company", "location": "", "description": ""}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 204
+    assert response.headers['message'] == td_headers
+
+    get_response = client.get(f'/jobs/v1/{td_id}')
+    
+    assert get_response.status_code == 200
+    assert get_response.json()['company'] == td_company
+
+
+def test_tc0012_put_location(client):
+    td_id = 1
+    td_location = 'test location'
+    td_headers = 'Successfully updated job details'
+    td_payload = '{"title": "", "company": "", "location": "test location", "description": ""}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 204
+    assert response.headers['message'] == td_headers
+
+    get_response = client.get(f'/jobs/v1/{td_id}')
+    
+    assert get_response.status_code == 200
+    assert get_response.json()['location'] == td_location
+
+
+def test_tc0012_put_description(client):
+    td_id = 1
+    td_description = 'test description'
+    td_headers = 'Successfully updated job details'
+    td_payload = '{"title": "", "company": "", "location": "", "description": "test description"}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 204
+    assert response.headers['message'] == td_headers
+
+    get_response = client.get(f'/jobs/v1/{td_id}')
+    
+    assert get_response.status_code == 200
+    assert get_response.json()['description'] == td_description
+
+
+def test_tc0013_put_no_body(client):
+    td_id = 1
+    td_message = 'request body fields cannot be empty. Please check your payload and try again.'
+    td_payload = '{"title": "", "company": "", "location": "", "description": ""}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_tc0013_put_empty_fields(client):
+    td_id = 1
+    td_message = 'request body fields cannot be empty. Please check your payload and try again.'
+    td_payload = '{"title": "", "company": "", "location": "", "description": ""}'
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content= 'application/json')
+
+    assert response.status_code == 400
+    assert response.json()['detail'] == td_message
+
+
+def test_0014_put_invalid_id(client):
+    td_id = 1234
+    td_message = f'ID number {td_id} does not exist. Please check your parameter and try again.'
+    td_payload = '{"title": "test title", "company": "test company", "location": "test location", "description": "test description"}'
+
+
+    response = client.put(f'/jobs/v1/{td_id}', data= td_payload, content='application/json')
+
+    assert response.status_code == 404
+    assert response.json()['detail'] == td_message
