@@ -88,14 +88,14 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
 
 
     if title_request == None and company_request == None and location_request == None and description_request == None: 
-        response_text = 'response body cannot be empty. Please check your parameter and try again.'
+        response_text = 'request body cannot be empty. Please check your payload and try again.'
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
     
 
     job_id_check = jobs_repository.get_by_id(db, job_id)
 
     if job_id_check == None:
-        response_text = 'username does not exist. Please check your parameter and try again.'
+        response_text = f'ID number {job_id} does not exist. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
     if title_request != None:
@@ -116,7 +116,7 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
 
 
     if title_request == '' and company_request == '' and location_request == '' and description_request == '':
-        response_text = 'response body fields cannot be empty. Please check your payload and try again.'
+        response_text = 'request body fields cannot be empty. Please check your payload and try again.'
         raise HTTPException(status_code=400, detail=response_text)
     
     response.status_code = status.HTTP_204_NO_CONTENT
