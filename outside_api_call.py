@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import HTTPError
 
 response = requests.get('https://api.github.com')
+print(response.content)
 
 if response.status_code == 200:
     print('Success!')
