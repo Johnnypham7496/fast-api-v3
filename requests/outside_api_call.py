@@ -1,5 +1,8 @@
 import requests
 from requests.exceptions import HTTPError
+from getpass import getpass
+from requests.auth import HTTPBasicAuth
+
 
 response = requests.get('https://api.github.com')
 print(response.text)
@@ -51,3 +54,8 @@ print(json_response['data'])
 print(json_response['headers']['Content-Type'])
 print(bin_response.request.url)
 print(bin_response.request.body)
+
+
+
+auth_response = requests.get('http://api.github.com/user', auth= HTTPBasicAuth('username', getpass()))
+print(auth_response)
