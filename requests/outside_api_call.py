@@ -43,3 +43,9 @@ respository = json_response['items'][0]
 print(f'Repository name: {respository["name"]}')
 print(f'Repository description: {respository["description"]}')  
 print(f'Text matches: {respository["text_matches"]}')
+
+
+bin_response = requests.post('http://httpbin.org/post', json= {'key': 'value'})
+json_response = bin_response.json()
+print(json_response['data'])
+print(json_response['headers']['Content-Type'])
