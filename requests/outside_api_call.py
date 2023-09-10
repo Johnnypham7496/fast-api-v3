@@ -28,3 +28,16 @@ for url in ['https://api.github.com', 'https://api.github.com/invalid']:
         print(f'Other error occurred: {err}')
     else:
         print('Success!')
+
+
+# search githubs repositoriesfor requests
+response = requests.get(
+    'https://api.github.com/search/repositories',
+    params={'q': 'requests+language:python'},
+)
+
+# inspect some attributes of the 'requests' respository
+json_response = response.json()
+respository = json_response['items'][0]
+print(f'Repository name: {respository["name"]}')
+print(f'Repository description: {respository["description"]}')  
