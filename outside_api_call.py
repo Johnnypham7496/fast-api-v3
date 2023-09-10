@@ -2,7 +2,13 @@ import requests
 from requests.exceptions import HTTPError
 
 response = requests.get('https://api.github.com')
+print(response.text)
+print()
 print(response.content)
+print()
+print(response.headers['content-type'])
+print()
+print(response.json())
 
 if response.status_code == 200:
     print('Success!')
@@ -21,4 +27,4 @@ for url in ['https://api.github.com', 'https://api.github.com/invalid']:
     except Exception as err:
         print(f'Other error occurred: {err}')
     else:
-        print('Success')
+        print('Success!')
