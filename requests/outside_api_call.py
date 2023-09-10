@@ -34,6 +34,7 @@ for url in ['https://api.github.com', 'https://api.github.com/invalid']:
 response = requests.get(
     'https://api.github.com/search/repositories',
     params={'q': 'requests+language:python'},
+    headers={'Accept': 'application/vnd.github.v3.text-match+json'},
 )
 
 # inspect some attributes of the 'requests' respository
@@ -41,3 +42,4 @@ json_response = response.json()
 respository = json_response['items'][0]
 print(f'Repository name: {respository["name"]}')
 print(f'Repository description: {respository["description"]}')  
+print(f'Text matches: {respository["text_matches"]}')
