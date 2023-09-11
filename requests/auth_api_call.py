@@ -23,3 +23,11 @@ class TokenAuth(AuthBase):
 
 response = requests.get('https://httpbin.org/get', auth=TokenAuth('12345abcde-token'))
 print(response)
+
+
+ssl_response= requests.get('https://api.github.com', verify=False)
+print(ssl_response)
+
+
+timeout_response= requests.get('https://api.github.com', timeout=3.05)
+print(timeout_response)
