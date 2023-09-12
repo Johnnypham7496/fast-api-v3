@@ -1,0 +1,3 @@
+import unittest
+from unittest import mock
+from outside_api_call import rest_call_outside_api
