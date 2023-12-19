@@ -22,9 +22,8 @@ def get_all_jobs(response: Response, db: Session= Depends(get_db)):
 
 @router.get('/{job_id}', response_description='Successfully retrieved by ID', description='Get by ID', status_code= 200, responses={200: {"model": JobsModel}, 400: {"model": MessageModel}, 404: {"model": MessageModel}})
 def get_by_id(job_id: int, response: Response, db: Session= Depends(get_db)):
-    return_value = jobs_repository.get_by_id(db, job_id)
 
-    if return_value == None:
+    if (return_value := jobs_repository.get_by_id(db, job_id)) == None:
         response_text = f'company information with id {job_id} not found. Please check the ID number and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
@@ -41,9 +40,8 @@ def create_job_description(request: CreateJobModel, response: Response, db: Sess
     location_request = request.location.lower()
     description_request = request.description.lower()
 
-    username = users_repository.get_by_username(db, username_request)
 
-    if username is None:
+    if (username := users_repository.get_by_username(db, username_request)) is None:
         response_text = 'username not found. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=response_text)
 
@@ -92,9 +90,8 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= response_text)
     
 
-    job_id_check = jobs_repository.get_by_id(db, job_id)
 
-    if job_id_check == None:
+    if (job_id_check := jobs_repository.get_by_id(db, job_id)) == None:
         response_text = f'ID number {job_id} does not exist. Please check your parameter and try again.'
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= response_text)
     
@@ -126,9 +123,8 @@ def update_job(job_id: int, request: UpdateJobModel, response: Response, db: Ses
 
 @router.delete('/{job_id}', response_description= 'Successfully deleted job details', description= 'Delete job details by ID', status_code=204, responses={204: {"model": None}, 404: {"model": MessageModel}})
 def delete_job(job_id: int, response: Response, db: Session = Depends(get_db)):
-    return_value = jobs_repository.get_by_id(db, job_id)
 
-    if return_value == None:
+    if (return_value := jobs_repository.get_by_id(db, job_id)) == None:
         response_text = 'job detail not found. Please check your ID number and try again'
         raise HTTPException(status_code=404, detail=response_text)
     
